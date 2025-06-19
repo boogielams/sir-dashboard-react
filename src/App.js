@@ -7,6 +7,7 @@ import { useEthereumData } from './services/ethereumData';
 import { useSolanaData } from './services/solanaData';
 import { usePolygonData } from './services/polygonData';
 import { useBSCData } from './services/bscData';
+import { useSeiData } from './services/seiData';
 import { createPortal } from 'react-dom';
 
 // Tooltip Component
@@ -546,10 +547,11 @@ const SIRDashboard = () => {
   const { data: solData, loading: solLoading, error: solError } = useSolanaData(30000);
   const { data: polygonData, loading: polygonLoading, error: polygonError } = usePolygonData(30000);
   const { data: bscData, loading: bscLoading, error: bscError } = useBSCData(30000);
+  const { data: seiData, loading: seiLoading, error: seiError } = useSeiData(30000);
 
   // Merge real Base data with mock data
   const getNetworksWithLiveData = useCallback(() => {
-    if (!baseData && !ethData && !solData && !polygonData && !bscData) return mockNetworks;
+    if (!baseData && !ethData && !solData && !polygonData && !bscData && !seiData) return mockNetworks;
     
     return mockNetworks.map(network => {
       if (network.id === 'base' && baseData) {
@@ -627,9 +629,24 @@ const SIRDashboard = () => {
           dataQuality: bscData.dataQuality
         };
       }
+      if (network.id === 'sei' && seiData) {
+        return {
+          ...network,
+          tps: seiData.tps || network.tps,
+          gasPrice: seiData.gasPrice || network.gasPrice,
+          finality: seiData.finality || network.finality,
+          uptime: seiData.uptime || network.uptime,
+          marketCap: seiData.marketCap || network.marketCap,
+          volume24h: seiData.volume24h || network.volume24h,
+          change24h: seiData.priceChange24h || network.change24h,
+          lastUpdated: seiData.lastUpdated,
+          isLiveData: true,
+          dataQuality: seiData.dataQuality
+        };
+      }
       return network;
     });
-  }, [baseData, ethData, solData, polygonData, bscData]);
+  }, [baseData, ethData, solData, polygonData, bscData, seiData]);
 
   useEffect(() => {
     const data = {};
@@ -1276,6 +1293,17 @@ const SIRDashboard = () => {
                                   </span>
                                 )}
                                 {network.id === 'bsc' && bscError && (
+                                  <span className="px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">
+                                    Error
+                                  </span>
+                                )}
+                                {network.id === 'sei' && seiLoading && (
+                                  <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full flex items-center gap-1">
+                                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-spin"></div>
+                                    Loading...
+                                  </span>
+                                )}
+                                {network.id === 'sei' && seiError && (
                                   <span className="px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">
                                     Error
                                   </span>

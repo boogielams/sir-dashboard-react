@@ -147,12 +147,11 @@ export const getSolanaData = async () => {
       ]);
     };
     
-    const [tps, transactionFee, marketData, tvl, networkStats] = await Promise.allSettled([
+    const [tps, transactionFee, marketData, tvl] = await Promise.allSettled([
       fetchWithTimeout(getSolanaTPS()),
       fetchWithTimeout(getSolanaTransactionFee()),
       fetchWithTimeout(getSolanaMarketData()),
-      fetchWithTimeout(getSolanaTVL()),
-      fetchWithTimeout(getSolanaNetworkStats())
+      fetchWithTimeout(getSolanaTVL())
     ]);
     
     // Extract successful results
