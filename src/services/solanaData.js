@@ -120,17 +120,6 @@ const getSolanaTVL = async () => {
   }
 };
 
-// Get Solana network stats
-const getSolanaNetworkStats = async () => {
-  try {
-    const stats = await makeSolanaBeachCall('/stats');
-    return stats;
-  } catch (error) {
-    console.error('Error getting Solana network stats:', error);
-    return null;
-  }
-};
-
 // Main function to get all Solana data
 export const getSolanaData = async () => {
   try {

@@ -8,6 +8,7 @@ import { useSolanaData } from './services/solanaData';
 import { usePolygonData } from './services/polygonData';
 import { useBSCData } from './services/bscData';
 import { useSeiData } from './services/seiData';
+import { useSuiData } from './services/suiData';
 import { createPortal } from 'react-dom';
 
 // Tooltip Component
@@ -59,19 +60,27 @@ const InfoTooltip = ({ children, content, position = 'top' }) => {
 };
 
 // Network Logo Component with actual blockchain logos
+const sizePxMap = {
+  'text-lg': 24,
+  'text-xl': 28,
+  'text-2xl': 32,
+  'text-3xl': 40,
+  'text-4xl': 48
+};
+
 const NetworkLogo = ({ network, size = 'text-3xl', className = '' }) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-  
-  // Map size classes to actual dimensions
+
   const sizeMap = {
     'text-lg': 'w-6 h-6',
-    'text-xl': 'w-7 h-7', 
+    'text-xl': 'w-7 h-7',
     'text-2xl': 'w-8 h-8',
     'text-3xl': 'w-10 h-10',
     'text-4xl': 'w-12 h-12'
   };
-  
+  const px = sizePxMap[size] || 32;
+
   const getLogoUrl = (networkId) => {
     const logoUrls = {
       'solana': solanaLogo,
@@ -85,47 +94,40 @@ const NetworkLogo = ({ network, size = 'text-3xl', className = '' }) => {
       'avalanche': 'https://s2.coinmarketcap.com/static/img/coins/64x64/5805.png',
       'bsc': 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png'
     };
-    
     return logoUrls[networkId] || null;
   };
-  
+
   const logoUrl = getLogoUrl(network.id);
-  
-  // Reset loading/error state when logoUrl changes
+
   useEffect(() => {
     setImageLoaded(false);
     setImageError(false);
   }, [logoUrl]);
-  
-  // If no logo URL or image failed to load, show fallback
-  if (!logoUrl || imageError) {
-    return (
-      <div className={`${sizeMap[size] || 'w-8 h-8'} flex items-center justify-center bg-gray-100 rounded-full ${className}`}>
-        <span className="text-lg font-bold text-gray-600">
-          {network.logoFallback}
-        </span>
-      </div>
-    );
-  }
-  
+
   return (
-    <div className="relative">
-      <img
-        src={logoUrl}
-        alt={`${network.name} logo`}
-        className={`${sizeMap[size] || 'w-8 h-8'} object-contain rounded-full ${className}`}
-        onError={() => setImageError(true)}
-        onLoad={() => setImageLoaded(true)}
-        style={{ 
-          display: imageLoaded ? 'block' : 'none',
-          backgroundColor: 'white'
-        }}
-      />
-      {!imageLoaded && (
-        <div className={`${sizeMap[size] || 'w-8 h-8'} flex items-center justify-center bg-gray-100 rounded-full animate-pulse`}>
-          <span className="text-lg font-bold text-gray-600">
-            {network.logoFallback}
-          </span>
+    <div
+      className={`relative flex items-center justify-center rounded-full bg-gray-100 ${sizeMap[size] || 'w-8 h-8'} ${className}`}
+      style={{ width: px, height: px, minWidth: px, minHeight: px }}
+    >
+      {logoUrl && !imageError && (
+        <img
+          src={logoUrl}
+          alt={`${network.name} logo`}
+          width={px}
+          height={px}
+          className={`object-contain rounded-full absolute top-0 left-0`}
+          style={{ width: px, height: px, minWidth: px, minHeight: px, backgroundColor: 'white', zIndex: 1, opacity: imageLoaded ? 1 : 0, transition: 'opacity 0.2s' }}
+          onError={() => setImageError(true)}
+          onLoad={() => setImageLoaded(true)}
+          draggable={false}
+        />
+      )}
+      {(!logoUrl || imageError || !imageLoaded) && (
+        <div
+          className={`flex items-center justify-center w-full h-full rounded-full absolute top-0 left-0 animate-pulse`}
+          style={{ width: px, height: px, minWidth: px, minHeight: px, zIndex: 2, background: 'inherit' }}
+        >
+          <span className="text-lg font-bold text-gray-600" style={{ fontSize: Math.max(14, px * 0.6) }}>{network.logoFallback}</span>
         </div>
       )}
     </div>
@@ -548,10 +550,11 @@ const SIRDashboard = () => {
   const { data: polygonData, loading: polygonLoading, error: polygonError } = usePolygonData(30000);
   const { data: bscData, loading: bscLoading, error: bscError } = useBSCData(30000);
   const { data: seiData, loading: seiLoading, error: seiError } = useSeiData(30000);
+  const { data: suiData, loading: suiLoading, error: suiError } = useSuiData(30000);
 
   // Merge real Base data with mock data
   const getNetworksWithLiveData = useCallback(() => {
-    if (!baseData && !ethData && !solData && !polygonData && !bscData && !seiData) return mockNetworks;
+    if (!baseData && !ethData && !solData && !polygonData && !bscData && !seiData && !suiData) return mockNetworks;
     
     return mockNetworks.map(network => {
       if (network.id === 'base' && baseData) {
@@ -644,9 +647,24 @@ const SIRDashboard = () => {
           dataQuality: seiData.dataQuality
         };
       }
+      if (network.id === 'sui' && suiData) {
+        return {
+          ...network,
+          tps: suiData.tps || network.tps,
+          gasPrice: suiData.gasPrice || network.gasPrice,
+          finality: suiData.finality || network.finality,
+          uptime: suiData.uptime || network.uptime,
+          marketCap: suiData.marketCap || network.marketCap,
+          volume24h: suiData.volume24h || network.volume24h,
+          change24h: suiData.priceChange24h || network.change24h,
+          lastUpdated: suiData.lastUpdated,
+          isLiveData: true,
+          dataQuality: suiData.dataQuality
+        };
+      }
       return network;
     });
-  }, [baseData, ethData, solData, polygonData, bscData, seiData]);
+  }, [baseData, ethData, solData, polygonData, bscData, seiData, suiData]);
 
   useEffect(() => {
     const data = {};
@@ -1304,6 +1322,17 @@ const SIRDashboard = () => {
                                   </span>
                                 )}
                                 {network.id === 'sei' && seiError && (
+                                  <span className="px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">
+                                    Error
+                                  </span>
+                                )}
+                                {network.id === 'sui' && suiLoading && (
+                                  <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full flex items-center gap-1">
+                                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-spin"></div>
+                                    Loading...
+                                  </span>
+                                )}
+                                {network.id === 'sui' && suiError && (
                                   <span className="px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">
                                     Error
                                   </span>

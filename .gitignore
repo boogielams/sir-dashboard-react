@@ -99,3 +99,4 @@ jspm_packages/
 
 # API Keys and sensitive config
 src/config/apiKeys.js
+.vercel
