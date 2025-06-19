@@ -1,70 +1,125 @@
-# Getting Started with Create React App
+# SIR Analytics Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Advanced Blockchain AI Readiness Intelligence Dashboard with real-time data integration.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Live Blockchain Data**: Real-time TPS, gas prices, finality, and market data
+- **AI Project Analyzer**: Customize rankings based on your specific use case
+- **Multi-Network Comparison**: Compare up to 3 networks side-by-side
+- **Cost Calculator**: Calculate transaction costs for different networks
+- **Predictions & Analytics**: 6-month forecasts and market correlation analysis
 
-### `npm start`
+## Currently Supported Live Data
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Base (Coinbase L2) ✅
+- **TPS**: Real-time transaction per second calculation from recent blocks
+- **Gas Price**: Live gas prices from Base RPC
+- **Market Data**: Price, market cap, volume from CoinGecko API
+- **TVL**: Total Value Locked from DefiLlama API
+- **Finality**: Optimistic rollup finality (7 days)
+- **Uptime**: Network reliability metrics
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Ethereum ✅
+- **TPS**: Real-time calculation from recent blocks via Etherscan
+- **Gas Price**: Live gas prices from Etherscan Gas Oracle
+- **Market Data**: Price, market cap, volume from CoinGecko API
+- **TVL**: Total Value Locked from DefiLlama API
+- **Finality**: Proof of Stake finality (12s)
+- **Uptime**: Network reliability metrics
 
-### `npm test`
+### Solana ✅
+- **TPS**: Real-time TPS from Solana Beach API and RPC
+- **Transaction Fee**: Live transaction fees in USD
+- **Market Data**: Price, market cap, volume from CoinGecko API
+- **TVL**: Total Value Locked from DefiLlama API
+- **Finality**: Proof of History finality (0.8s)
+- **Uptime**: Network reliability metrics
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Polygon ✅
+- **TPS**: Real-time calculation from recent blocks via Polygonscan
+- **Gas Price**: Live gas prices from Polygonscan Gas Oracle
+- **Market Data**: Price, market cap, volume from CoinGecko API
+- **TVL**: Total Value Locked from DefiLlama API
+- **Finality**: Proof of Stake finality (2.3s)
+- **Uptime**: Network reliability metrics
 
-### `npm run build`
+### BSC (Binance Smart Chain) ✅
+- **TPS**: Real-time calculation from recent blocks via BscScan
+- **Gas Price**: Live gas prices from BscScan Gas Oracle
+- **Market Data**: Price, market cap, volume from CoinGecko API
+- **TVL**: Total Value Locked from DefiLlama API
+- **Finality**: Proof of Staked Authority finality (3s)
+- **Uptime**: Network reliability metrics
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## API Key Setup
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To get the most accurate data, you'll need free API keys for some networks:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Required API Keys
+1. **Etherscan** (for Ethereum): https://etherscan.io/apis
+2. **Polygonscan** (for Polygon): https://polygonscan.com/apis  
+3. **BscScan** (for BSC): https://bscscan.com/apis
 
-### `npm run eject`
+### Setup Instructions
+1. Create a `.env` file in your project root
+2. Add your API keys:
+   ```
+   REACT_APP_ETHERSCAN_API_KEY=your_etherscan_key_here
+   REACT_APP_POLYGONSCAN_API_KEY=your_polygonscan_key_here
+   REACT_APP_BSCSCAN_API_KEY=your_bscscan_key_here
+   ```
+3. Restart your development server
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Free APIs (No Keys Required)
+- **CoinGecko**: Market data for all networks
+- **DefiLlama**: TVL data for all networks
+- **Base RPC**: Public Base network data
+- **Solana RPC**: Public Solana network data
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Development
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+# Install dependencies
+npm install
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# Start development server
+npm start
 
-## Learn More
+# Build for production
+npm run build
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Data Sources
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Free APIs (No Keys Required)
+- **Base RPC**: https://mainnet.base.org
+- **Base Blockscout**: https://base.blockscout.com/api/v2
+- **Solana RPC**: https://api.mainnet-beta.solana.com
+- **Solana Beach**: https://api.solanabeach.io/v1
+- **CoinGecko API**: https://api.coingecko.com/api/v3
+- **DefiLlama API**: https://api.llama.fi
 
-### Code Splitting
+### APIs Requiring Keys
+- **Etherscan API**: https://docs.etherscan.io/
+- **Polygonscan API**: https://polygonscan.com/apis
+- **BscScan API**: https://bscscan.com/apis
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Visual Indicators
 
-### Analyzing the Bundle Size
+The dashboard shows data quality indicators:
+- 🟢 **Live**: Real-time data from APIs
+- 🟡 **Estimated**: Fallback data when APIs are unavailable
+- 🔵 **Loading**: Data is being fetched
+- 🔴 **Error**: API request failed
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Contributing
 
-### Making a Progressive Web App
+1. Fork the repository
+2. Create a feature branch
+3. Add live data for a new network
+4. Submit a pull request
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## License
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+MIT License
