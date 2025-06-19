@@ -1,14 +1,35 @@
-# SIR Analytics Platform
+# SIR Dashboard - Synthetic Intelligence Readiness
 
-Advanced Blockchain AI Readiness Intelligence Dashboard with real-time data integration.
+A comprehensive dashboard for evaluating blockchain networks' readiness for AI agent operations.
 
 ## Features
 
-- **Live Blockchain Data**: Real-time TPS, gas prices, finality, and market data
-- **AI Project Analyzer**: Customize rankings based on your specific use case
-- **Multi-Network Comparison**: Compare up to 3 networks side-by-side
-- **Cost Calculator**: Calculate transaction costs for different networks
-- **Predictions & Analytics**: 6-month forecasts and market correlation analysis
+- **Real-time blockchain data** from multiple networks (Base, Ethereum, Solana, etc.)
+- **AI-powered project analysis** with custom weighting
+- **Workload simulator** for comparing network performance
+- **Cost calculator** for AI agent operations
+- **Live data integration** with fallback to mock data
+
+## Latest Update
+
+**Deployment timestamp:** $(date)
+
+## Getting Started
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start the development server: `npm start`
+
+## Live Demo
+
+Visit the live dashboard at: [Your Vercel URL]
+
+## Technologies
+
+- React
+- Tailwind CSS
+- Recharts
+- Lucide React Icons
 
 ## Currently Supported Live Data
 
