@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+// Latest deployment: Fixed Tailwind CSS PostCSS configuration for Vercel
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ScatterChart, Scatter } from 'recharts';
 import { TrendingUp, TrendingDown, Minus, Star, Zap, Search, Heart, Download, AlertTriangle, Eye, Calculator, BarChart3, Activity, Brain, Target, Sparkles, Info } from 'lucide-react';
 import solanaLogo from './assets/solana.svg';
