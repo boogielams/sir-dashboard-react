@@ -244,7 +244,7 @@ export const useSuiData = (refreshInterval = 30000) => {
       
       console.log('Sui market data: Using fallback data - all sources failed');
       return {
-        marketCap: '$3.2B',
+        marketCap: '$8.5B',
         volume24h: '$89M',
         priceChange24h: 1.8,
         isLive: false
@@ -252,7 +252,7 @@ export const useSuiData = (refreshInterval = 30000) => {
     } catch (error) {
       console.error('Error fetching market data:', error);
       return {
-        marketCap: '$3.2B',
+        marketCap: '$8.5B',
         volume24h: '$89M',
         priceChange24h: 1.8,
         isLive: false
@@ -363,7 +363,7 @@ export const useSuiData = (refreshInterval = 30000) => {
         gasPrice: '$0.001', // Fallback gas price
         finality: '0.5s', // Fallback finality
         uptime: 99.5, // Fallback uptime
-        marketCap: '$3.2B', // Fallback market cap
+        marketCap: '$8.5B', // Fallback market cap
         volume24h: '$89M', // Fallback volume
         priceChange24h: 1.8 // Fallback price change
       };

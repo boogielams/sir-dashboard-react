@@ -182,7 +182,9 @@ export const getBaseData = async () => {
     const uptime = 99.5; // Base has been very reliable
     
     // Format gas price for display
-    const formattedGasPrice = successfulGasPrice ? `$${(successfulGasPrice * 0.000000001).toFixed(6)}` : null;
+    // Convert from gwei to dollars (1 gwei = 0.000000001 ETH, and assuming ETH price around $3000)
+    const ethPrice = 3000; // Approximate ETH price
+    const formattedGasPrice = successfulGasPrice ? `$${(successfulGasPrice * 0.000000001 * ethPrice).toFixed(4)}` : null;
     
     // Calculate market cap
     const marketCap = successfulMarketData?.usd_market_cap ? `$${(successfulMarketData.usd_market_cap / 1e9).toFixed(1)}B` : null;
@@ -192,7 +194,7 @@ export const getBaseData = async () => {
     
     const baseData = {
       tps: successfulTps || 100, // Fallback to estimated TPS
-      gasPrice: formattedGasPrice || '$0.000001',
+      gasPrice: formattedGasPrice || '$0.05',
       finality,
       uptime,
       marketCap: marketCap || '$8.1B',
@@ -216,7 +218,7 @@ export const getBaseData = async () => {
     // Return fallback data
     return {
       tps: 100,
-      gasPrice: '$0.000001',
+      gasPrice: '$0.05',
       finality: '7 days',
       uptime: 99.5,
       marketCap: '$8.1B',
